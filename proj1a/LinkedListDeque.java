@@ -3,107 +3,103 @@
  * @version 1.0
  * @create 2022/6/8 下午7:40
  */
-public class LinkedListDeque<V> {
-    private T sentinel;
+public class LinkedListDeque<T> {
+    private Node sentinel;
     private int size;
 
-    class T {
-        private T prev;
-        private V item;
-        private T next;
+    class Node {
+        private T item;
+        private Node prev;
+        private Node next;
+
+        public Node(T item, Node prev, Node next) {
+            this.item = item;
+            this.prev = prev;
+            this.next = next;
+        }
+
+        public Node(Node prev, Node next) {
+            this.prev = prev;
+            this.next = next;
+        }
     }
 
     public LinkedListDeque() {
-        sentinel = new T();
-        sentinel.item = (V) new Object();
+        sentinel = new Node(null, null);
         sentinel.prev = sentinel;
-        sentinel.next = sentinel.prev;
+        sentinel.next = sentinel;
     }
 
     /**
      * Adds an item of type T to the front of the deque.
      */
-    public void addFirst(V item) {
-        T t = new T();
-        t.item = item;
-        t.next = sentinel.next;
-        t.prev = sentinel;
+    public void addFirst(T item) {
+        Node t = new Node(item, sentinel, sentinel.next);
         sentinel.next.prev = t;
         sentinel.next = t;
-
         size++;
     }
 
     /**
      * Adds an item of type T to the back of the deque.
      */
-    public void addLast(V item) {
-        T t = new T();
-        t.item = item;
-        t.prev = sentinel.prev;
-        t.next = sentinel;
-        sentinel.prev = t.next;
+    public void addLast(T item) {
+        Node t = new Node(item, sentinel.prev, sentinel);
+        sentinel.prev = t;
         sentinel.prev.next = t;
-
         size++;
     }
 
     public T removeFirst() {
         if (size == 0) {
-            System.out.println("no item in the deque!");
             return null;
         }
-        T p = sentinel.next;
-
-        p.next.prev = sentinel;
-        sentinel.next = p.next;
+        T ret = sentinel.next.item;
+        sentinel.next.next.prev = sentinel;
+        sentinel.next = sentinel.next.next;
         size--;
-        return p;
+        return ret;
     }
 
     public T removeLast() {
         if (size == 0) {
-            System.out.println("no item in the deque!");
             return null;
         }
-        T p = sentinel.prev;
-
-        p.prev.next = sentinel;
-        sentinel.prev = p.prev;
+        T ret = sentinel.prev.item;
+        sentinel.prev.prev.next = sentinel;
+        sentinel.prev = sentinel.prev.prev;
         size--;
-        return p;
+        return ret;
     }
 
     public T get(int index) {
         if (size == 0) {
-            System.out.println("no item in the deque!");
             return null;
         }
-
-        T p = sentinel;
-        for (int i = 0; i < size; i++) {
-            if (i == index) {
-                return p.next;
-            }
+        Node p = sentinel;
+        for (int i = 0; i <= index; i++) {
             p = p.next;
         }
-        return null;
+        return p.item;
+
     }
 
     /**
      * Same as get, but uses recursion.
      */
+    private T getRecursiveHelp(Node start, int index) {
+        if (index == 0) {
+            return start.item;
+        } else {
+            return getRecursiveHelp(start.next, index - 1);
+        }
+    }
+
     public T getRecursive(int index) {
-        if (size == 0) {
-            System.out.println("no item in the deque!");
+        if (index >= size) {
             return null;
         }
-
-        T p = sentinel;
-        if (index == 0) {
-            return p.next;
-        }
-        return getRecursive(index - 1);
+        return getRecursiveHelp(sentinel.next, index);
     }
 
     /**
@@ -124,9 +120,10 @@ public class LinkedListDeque<V> {
      * Prints the items in the deque from first to last, separated by a space.
      */
     public void printDeque() {
-        T p = sentinel.next;
-        while (p.next != sentinel) {
+        Node p = sentinel.next;
+        while (p != sentinel) {
             System.out.print(p.item + " ");
+            p = p.next;
         }
     }
 }
