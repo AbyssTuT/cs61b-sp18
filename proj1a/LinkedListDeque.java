@@ -8,9 +8,9 @@ public class LinkedListDeque<V> {
     private int size;
 
     class T {
-        public T prev;
-        public V item;
-        public T next;
+        private T prev;
+        private V item;
+        private T next;
     }
 
     public LinkedListDeque() {
@@ -25,7 +25,7 @@ public class LinkedListDeque<V> {
      */
     public void addFirst(V item) {
         T t = new T();
-        t.item =item;
+        t.item = item;
         t.next = sentinel.next;
         t.prev = sentinel;
         sentinel.next.prev = t;
@@ -39,7 +39,7 @@ public class LinkedListDeque<V> {
      */
     public void addLast(V item) {
         T t = new T();
-        t.item =item;
+        t.item = item;
         t.prev = sentinel.prev;
         t.next = sentinel;
         sentinel.prev = t.next;
@@ -48,8 +48,8 @@ public class LinkedListDeque<V> {
         size++;
     }
 
-    public T removeFirst(){
-        if (size == 0){
+    public T removeFirst() {
+        if (size == 0) {
             System.out.println("no item in the deque!");
             return null;
         }
@@ -57,12 +57,12 @@ public class LinkedListDeque<V> {
 
         p.next.prev = sentinel;
         sentinel.next = p.next;
-        size --;
+        size--;
         return p;
     }
 
-    public T removeLast(){
-        if (size == 0){
+    public T removeLast() {
+        if (size == 0) {
             System.out.println("no item in the deque!");
             return null;
         }
@@ -70,19 +70,19 @@ public class LinkedListDeque<V> {
 
         p.prev.next = sentinel;
         sentinel.prev = p.prev;
-        size --;
+        size--;
         return p;
     }
 
-    public T get(int index){
-        if (size == 0){
+    public T get(int index) {
+        if (size == 0) {
             System.out.println("no item in the deque!");
             return null;
         }
 
         T p = sentinel;
         for (int i = 0; i < size; i++) {
-            if(i == index){
+            if (i == index) {
                 return p.next;
             }
             p = p.next;
@@ -93,14 +93,14 @@ public class LinkedListDeque<V> {
     /**
      * Same as get, but uses recursion.
      */
-    public T getRecursive(int index){
-        if (size == 0){
+    public T getRecursive(int index) {
+        if (size == 0) {
             System.out.println("no item in the deque!");
             return null;
         }
 
         T p = sentinel;
-        if (index ==0){
+        if (index == 0) {
             return p.next;
         }
         return getRecursive(index - 1);
@@ -129,6 +129,4 @@ public class LinkedListDeque<V> {
             System.out.print(p.item + " ");
         }
     }
-
-
 }

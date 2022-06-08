@@ -78,10 +78,10 @@ public class ArrayDeque<T> {
      * If no such item exists, returns null. Must not alter the deque!
      */
     public T get(int index) {
-        if(index < 0 || index >= size || size ==0){
+        if (index < 0 || index >= size || size == 0) {
             return null;
         }
-        index = Math.floorMod(plusOne(back,array.length) + index, array.length);
+        index = Math.floorMod(plusOne(front, array.length) + index, array.length);
         return array[index];
     }
 
@@ -98,7 +98,7 @@ public class ArrayDeque<T> {
     /**
      * resize
      */
-    public void resize() {
+    private void resize() {
         if (size == array.length) {
             grow();
         }
@@ -110,21 +110,23 @@ public class ArrayDeque<T> {
     /**
      * double the length of array
      */
-    public void grow() {
+    private void grow() {
         resizeHelper(array.length * 2);
     }
 
     /**
      * halve the length of array
      */
-    public void shrink() {
+    private void shrink() {
         resizeHelper(array.length / 2);
     }
 
-    public void resizeHelper(int capacity) {
+    private void resizeHelper(int capacity) {
         T[] tempArr = array;
-        int begin = plusOne(front, array.length);//set the front index + 1, the loop should start from the begin
-        int end = minusOne(back); //set the back index - 1, the loop should end in the end
+        //set the front index + 1, the loop should start from the begin
+        int begin = plusOne(front, array.length);
+        //set the back index - 1, the loop should end in the end
+        int end = minusOne(back);
         array = (T[]) new Object[capacity];
         front = 0;
         back = 1;
@@ -155,8 +157,8 @@ public class ArrayDeque<T> {
      * Prints the items in the deque from first to last, separated by a space.
      */
     public void printDeque() {
-        for (int i = plusOne(front,array.length); i != back ; i = plusOne(i,array.length)) {
-            System.out.print(array[i]+" ");
+        for (int i = plusOne(front, array.length); i != back; i = plusOne(i, array.length)) {
+            System.out.print(array[i] + " ");
             System.out.println();
         }
     }

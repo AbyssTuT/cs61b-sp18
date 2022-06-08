@@ -32,6 +32,7 @@ public class ArrayDequeTest {
         for (int i = 0; i < 16; i++) {
             ad.addLast(i);
         }
+        System.out.println(ad.get(0));
         for (int i = -16; i < 0; i++) {
             ad.addFirst(i);
         }
