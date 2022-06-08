@@ -87,12 +87,14 @@ public class ArrayDeque<T> {
 
     /* get the last index */
     private int minusOne(int index) {
-        return Math.floorMod(index - 1, array.length);
+        int b = Math.floorMod(index - 1, array.length);
+        return b;
     }
 
     /* get the next index */
     private int plusOne(int index, int length) {
-        return Math.floorMod(index + 1, length);
+        int n = Math.floorMod(index + 1, length);
+        return n;
     }
 
     /**

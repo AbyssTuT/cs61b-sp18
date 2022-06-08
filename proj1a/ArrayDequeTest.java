@@ -29,6 +29,11 @@ public class ArrayDequeTest {
     @Test
     public void resizeTest() {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
+        ad.addLast(1);
+        ad.addLast(2);
+        Integer integer = ad.get(1);
+        Integer integer1 = ad.removeLast();
+
         for (int i = 0; i < 16; i++) {
             ad.addLast(i);
         }
