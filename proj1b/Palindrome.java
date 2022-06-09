@@ -21,7 +21,7 @@ public class Palindrome {
         return dq.size() > 1 ? false : true;
     }
 
-    public Deque<Character> isPalindromeHelper(Deque<Character> dq) {
+    private Deque<Character> isPalindromeHelper(Deque<Character> dq) {
         Character f = dq.removeFirst();
         Character l = dq.removeLast();
         if (!f.equals(l)) {
@@ -35,10 +35,10 @@ public class Palindrome {
         return isPalindromeHelper(dq);
     }
 
-    public Deque<Character> isPalindromeHelper(Deque<Character> dq,CharacterComparator cc) {
+    private Deque<Character> isPalindromeHelper(Deque<Character> dq, CharacterComparator cc) {
         Character f = dq.removeFirst();
         Character l = dq.removeLast();
-        if (! cc.equalChars(f,l)) {
+        if (!cc.equalChars(f, l)) {
             dq.addLast('0');
             dq.addLast('0');
             return dq;
@@ -46,15 +46,15 @@ public class Palindrome {
         if (dq.size() < 2) {
             return dq;
         }
-        return isPalindromeHelper(dq,cc);
+        return isPalindromeHelper(dq, cc);
     }
 
-    public boolean isPalindrome(String word, CharacterComparator cc){
+    public boolean isPalindrome(String word, CharacterComparator cc) {
         LinkedListDeque<Character> dq = (LinkedListDeque<Character>) wordToDeque(word);
         while (dq.size() == 0 || dq.size() == 1) {
             return true;
         }
-        isPalindromeHelper(dq,cc);
+        isPalindromeHelper(dq, cc);
         return dq.size() > 1 ? false : true;
     }
 }

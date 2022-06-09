@@ -1,4 +1,5 @@
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class TestOffByOne {
@@ -8,11 +9,12 @@ public class TestOffByOne {
 
     // Your tests go here.
     @Test
-    public void equalCharsTest(){
-        assertTrue(offByOne.equalChars('a','b'));
-        assertFalse(offByOne.equalChars('a','c'));
-        assertFalse(offByOne.equalChars('a','a'));
-        assertTrue(offByOne.equalChars('%','&'));
+    public void equalCharsTest() {
+        assertTrue(offByOne.equalChars('a', 'b'));
+        assertFalse(offByOne.equalChars('a', 'B'));
+        assertFalse(offByOne.equalChars('a', 'c'));
+        assertFalse(offByOne.equalChars('a', 'a'));
+        assertTrue(offByOne.equalChars('%', '&'));
     }
 //    Uncomment this class once you've created your CharacterComparator interface and OffByOne class.
 }
