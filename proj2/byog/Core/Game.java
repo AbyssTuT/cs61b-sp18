@@ -71,15 +71,12 @@ public class Game {
         // Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-        if ((input.charAt(0) == 'N') && (input.charAt(input.length() - 1) == 'S')) {
-            SEED = Integer.parseInt(input.substring(1, input.length() - 1));
-            World.startGame();
-            TETile[][] finalWorldFrame = World.world;
-            return finalWorldFrame;
-        } else {
-            System.out.println("your game key is not correct");
-            return null;
-        }
+//        if ((input.charAt(0) == 'N') && (input.charAt(input.length() - 1) == 'S')) {
+        SEED = Integer.parseInt(input.substring(1, input.length() - 1));
+        World.startGame();
+        TETile[][] finalWorldFrame = World.world;
+        return finalWorldFrame;
+
 
     }
 }
