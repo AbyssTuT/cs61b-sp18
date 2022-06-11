@@ -5,7 +5,7 @@ package synthesizer;
  * @version 1.0
  * @create 2022/6/11 上午8:15
  */
-public interface BoundedQueue<T> extends Iterable<T>{
+public interface BoundedQueue<T> extends Iterable<T> {
     int capacity();     // return size of the buffer
 
     int fillCount();    // return number of items currently in the buffer
@@ -18,7 +18,7 @@ public interface BoundedQueue<T> extends Iterable<T>{
 
     // is the buffer empty (fillCount equals zero)?
     default boolean isEmpty() {
-        return capacity() == 0;
+        return fillCount() == 0;
     }
 
     // is the buffer full (fillCount is same as capacity)?

@@ -14,6 +14,7 @@ public class TestArrayRingBuffer {
     @Test
     public void someTest() {
         ArrayRingBuffer<Integer> arb = new ArrayRingBuffer<Integer>(5);
+        System.out.println(arb.isEmpty());
         arb.enqueue(1);
         System.out.println(arb.capacity);
         System.out.println(arb.fillCount);
