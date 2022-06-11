@@ -29,21 +29,30 @@ public class Game {
         StdDraw.text(0.5, 0.45, "LOAD GAME (L)");
         StdDraw.text(0.5, 0.4, "QUIT GAME (Q)");
 
-        In in = new In();
-        char gameKey = in.readChar();
-        if (gameKey == 'N' || gameKey == 'n') {
-            System.out.println("please input the SEED number");
-            in.readLine();
-            SEED = in.readLong();
-            System.out.println("input S to create world");
-            in.readLine();
-            char c = in.readChar();
-            if (c == 'S') {
-                World.createWorld();
+        boolean loop = true;
+        String input = "";
+        while (loop) {
+            if (!StdDraw.hasNextKeyTyped()) {
+                continue;
+            }
+            char key = StdDraw.nextKeyTyped();
+            if (key == 'N' || key == 'n') {
+                continue;
+            } else if (key > '0' && key < '9') {
+                input += String.valueOf(key);
+            } else if (key == 'L' || key == 'l') {
+
+            } else if (key == 'Q' || key == 'q') {
+                break;
+            } else if (key == 'S' || key == 's') {
+                loop = false;
             }
         }
+        if (input.length() > 0 && loop == false) {
+            SEED = Integer.parseInt(input);
+            World.startGame();
 
-
+        }
     }
 
     /**
@@ -65,10 +74,10 @@ public class Game {
         // drawn if the same inputs had been given to playWithKeyboard().
         if ((input.charAt(0) == 'N') && (input.charAt(input.length() - 1) == 'S')) {
             SEED = Integer.parseInt(input.substring(1, input.length() - 1));
-            World.createWorld();
+            World.startGame();
             TETile[][] finalWorldFrame = World.world;
             return finalWorldFrame;
-        }else{
+        } else {
             System.out.println("your game key is not correct");
             return null;
         }

@@ -3,11 +3,14 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import edu.princeton.cs.introcs.StdDraw;
 import jdk.nashorn.internal.ir.CallNode;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Random;
 
 
@@ -24,8 +27,11 @@ public class World {
     private static ArrayList<Room> rooms = new ArrayList<>();
     public static TETile[][] world = new TETile[WIDTH][HEIGHT];
     public static final TERenderer ter = new TERenderer();
+    public static boolean gameOver = false;
+    public static Position playerPos;
+    public static String keysTyped = "";
 
-    public static void initialWorld(TETile[][] world) {
+    private static void initialWorld(TETile[][] world) {
         ter.initialize(WIDTH, HEIGHT);
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
@@ -34,7 +40,7 @@ public class World {
         }
     }
 
-    public static void addSingleRoom(Room room) {
+    private static void addSingleRoom(Room room) {
         for (int x = room.position.x - 1; x < room.position.x + room.width + 1; x++) {
             for (int y = room.position.y - 1; y < room.position.y + room.height + 1; y++) {
                 world[x][y] = Tileset.WALL;
@@ -48,7 +54,7 @@ public class World {
         rooms.add(room);
     }
 
-    public static void addRooms(int num) {
+    private static void addRooms(int num) {
         int totalNum = 0;
         while (totalNum != num) {
             int randomXPos = RandomUtils.uniform(RANDOM, 1, WIDTH - Room.MAXROOMLENGTH - 1);
@@ -75,7 +81,7 @@ public class World {
         }
     }
 
-    public static void rearrangeRooms() {
+    private static void rearrangeRooms() {
         rooms.sort(new Comparator<Room>() {
             @Override
             public int compare(Room o1, Room o2) {
@@ -84,7 +90,7 @@ public class World {
         });
     }
 
-    public static void addHallway(Room s, Room e) {
+    private static void addHallway(Room s, Room e) {
         int intersectionY = RandomUtils.uniform(RANDOM, s.position.y, s.position.y + s.height);
         int intersectionX = RandomUtils.uniform(RANDOM, e.position.x, e.position.x + e.width);
 
@@ -92,7 +98,7 @@ public class World {
         drawVerticalHallway(e.position.y, intersectionY, intersectionX);
     }
 
-    public static void drawHorizontalHallway(int start, int end, int y) {
+    private static void drawHorizontalHallway(int start, int end, int y) {
         int tmp = 0;
         if (start >= end) {
             tmp = end;
@@ -108,7 +114,7 @@ public class World {
         }
     }
 
-    public static void drawVerticalHallway(int start, int end, int x) {
+    private static void drawVerticalHallway(int start, int end, int x) {
         int tmp = 0;
         if (start >= end) {
             tmp = end;
@@ -124,13 +130,13 @@ public class World {
         }
     }
 
-    public static void drawWallHelper(TETile[][] world, int x, int y) {
+    private static void drawWallHelper(TETile[][] world, int x, int y) {
         if (world[x][y] != Tileset.FLOOR) {
             world[x][y] = Tileset.WALL;
         }
     }
 
-    public static boolean canBeDoor(TETile[][] world, int x, int y) {
+    private static boolean canBeDoor(TETile[][] world, int x, int y) {
         if ((world[x - 1][y] == Tileset.FLOOR && world[x + 1][y] == Tileset.NOTHING) ||
                 (world[x + 1][y] == Tileset.FLOOR && world[x - 1][y] == Tileset.NOTHING) ||
                 (world[x][y - 1] == Tileset.FLOOR && world[x][y + 1] == Tileset.NOTHING) ||
@@ -141,7 +147,7 @@ public class World {
         return false;
     }
 
-    public static void drawLockedDoor() {
+    private static void drawLockedDoor() {
         while (true) {
             int x = RandomUtils.uniform(RANDOM, 1, WIDTH - 1);
             int y = RandomUtils.uniform(RANDOM, 1, HEIGHT - 1);
@@ -152,7 +158,19 @@ public class World {
         }
     }
 
-    public static void createWorld() {
+    private static void drawPlayer() {
+        while (true) {
+            int x = RandomUtils.uniform(RANDOM, 1, WIDTH - 1);
+            int y = RandomUtils.uniform(RANDOM, 1, HEIGHT - 1);
+            if (world[x][y] == Tileset.FLOOR) {
+                world[x][y] = Tileset.PLAYER;
+                playerPos = new Position(x, y);
+                break;
+            }
+        }
+    }
+
+    private static void createWorld() {
         initialWorld(world);
 
         // create rooms
@@ -168,10 +186,97 @@ public class World {
 
         drawLockedDoor();
 
-        ter.renderFrame(world);
+        drawPlayer();
+
     }
 
-//    public static void main(String[] args) {
-//        createWorld();
-//    }
+    private static void play() {
+        while (!gameOver) {
+            StdDraw.clear(Color.BLACK);
+            ter.renderFrame(world);
+            Font smallFont = new Font("Monaco", Font.BOLD, 20);
+            StdDraw.setFont(smallFont);
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.textLeft(1, HEIGHT - 1, getHud());
+            StdDraw.show();
+
+            keyListen();
+
+            StdDraw.pause(10);
+        }
+    }
+
+    private static void movePlayer(char key) {
+        switch (key) {
+            case 'W':
+            case 'w':
+                if (world[playerPos.x][playerPos.y + 1] != Tileset.WALL) {
+                    world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                    playerPos.y++;
+                    world[playerPos.x][playerPos.y] = Tileset.PLAYER;
+                }
+                break;
+            case 'S':
+            case 's':
+                if (world[playerPos.x][playerPos.y - 1] != Tileset.WALL) {
+                    world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                    playerPos.y--;
+                    world[playerPos.x][playerPos.y] = Tileset.PLAYER;
+                }
+                break;
+            case 'A':
+            case 'a':
+                if (world[playerPos.x - 1][playerPos.y] != Tileset.WALL) {
+                    world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                    playerPos.x--;
+                    world[playerPos.x][playerPos.y] = Tileset.PLAYER;
+                }
+                break;
+            case 'D':
+            case 'd':
+                if (world[playerPos.x + 1][playerPos.y] != Tileset.WALL) {
+                    world[playerPos.x][playerPos.y] = Tileset.FLOOR;
+                    playerPos.x++;
+                    world[playerPos.x][playerPos.y] = Tileset.PLAYER;
+                }
+                break;
+        }
+    }
+
+    private static void saveGame(){
+
+    }
+    private static void quitGame(){
+        System.out.println("you quit");
+        System.exit(0);
+    }
+
+    private static void keyListen() {
+        String input = "";
+        if (StdDraw.hasNextKeyTyped()) {
+            char key = StdDraw.nextKeyTyped();
+            keysTyped += String.valueOf(key);
+            if(keysTyped.length() >1) {
+                if (key == 'Q' && keysTyped.charAt(keysTyped.length() - 2) == ':') {
+                    saveGame();
+                    quitGame();
+                }
+            }
+
+            movePlayer(key);
+        }
+    }
+
+    private static String getHud() {
+        int mouseX = (int) StdDraw.mouseX();
+        int mouseY = (int) StdDraw.mouseY();
+        return world[mouseX][mouseY].description();
+    }
+
+    public static void startGame() {
+        createWorld();
+        play();
+    }
+
+
 }
