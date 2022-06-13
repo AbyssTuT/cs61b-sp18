@@ -57,6 +57,9 @@ public class Percolation {
         if (row < 0 || row >= length || col < 0 || col >= length) {
             throw new IndexOutOfBoundsException("row and col must between 0 and N-1");
         }
+        if (isOpen(row, col)) {
+            return;
+        }
         numberOfOpenSites++;
         grid[row][col] = true;
         int p = xyTo1d(row, col);
@@ -96,6 +99,7 @@ public class Percolation {
         perc.open(3, 3);
         perc.open(3, 2);
         perc.open(4, 4);
+        perc.open(1, 1);
         perc.open(1, 1);
         System.out.println(perc.isOpen(0, 0));
         System.out.println(perc.isOpen(4, 4));
