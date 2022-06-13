@@ -2,9 +2,6 @@ package hw2;
 
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
-import jdk.nashorn.internal.ir.CallNode;
-
-import java.util.ArrayList;
 
 public class PercolationStats {
     private int N;

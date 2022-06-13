@@ -11,7 +11,7 @@ public class Percolation {
 
     // create N-by-N grid, with all sites initially blocked
     public Percolation(int N) {
-        if (N<=0)
+        if (N <= 0)
             throw new IllegalArgumentException("N must > 0");
         length = N;
         grid = new boolean[N][N];
@@ -54,7 +54,7 @@ public class Percolation {
 
     // open the site (row, col) if it is not open already
     public void open(int row, int col) {
-        if(row <0 || row >= length || col < 0 || col >= length){
+        if (row < 0 || row >= length || col < 0 || col >= length) {
             throw new IndexOutOfBoundsException("row and col must between 0 and N-1");
         }
         numberOfOpenSites++;
@@ -66,7 +66,7 @@ public class Percolation {
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
-        if(row <0 || row >= length || col < 0 || col >= length){
+        if (row < 0 || row >= length || col < 0 || col >= length) {
             throw new IndexOutOfBoundsException("row and col must between 0 and N-1");
         }
         return grid[row][col];
@@ -74,7 +74,7 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        if(row <0 || row >= length || col < 0 || col >= length){
+        if (row < 0 || row >= length || col < 0 || col >= length) {
             throw new IndexOutOfBoundsException("row and col must between 0 and N-1");
         }
         return ufWithoutBackWash.connected(xyTo1d(row, col), 0);
