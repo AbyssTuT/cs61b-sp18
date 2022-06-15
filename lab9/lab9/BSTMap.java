@@ -202,18 +202,13 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     public static void main(String[] args) {
         BSTMap<String, Integer> bstmap = new BSTMap<>();
-        bstmap.put("a", 90);
-        bstmap.put("b", 90);
-        bstmap.put("c", 90);
         bstmap.put("d", 90);
-        bstmap.put("e", 90);
+        bstmap.put("b", 90);
         bstmap.put("f", 90);
-        bstmap.put("g", 90);
-        bstmap.put("h", 90);
-        bstmap.put("i", 5);
-        bstmap.put("j", 10);
-        bstmap.put("k", 22);
-        bstmap.remove("e");
+        bstmap.put("a", 90);
+        bstmap.put("c", 90);
+        bstmap.put("e", 90);
+        bstmap.remove("d");
     }
 
 }
