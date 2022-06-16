@@ -109,11 +109,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
 
         /** Your code here. */
-        if (getNode(index) == null) {
-            return;
-        }
+
         Node node1 = getNode(index);
         Node node2 = getNode((parentIndex(index)));
+        if (node1 == null || node2 == null) {
+            return;
+        }
         while (node1.myPriority < node2.myPriority) {
             swap(index, parentIndex(index));
             index = parentIndex(index);
