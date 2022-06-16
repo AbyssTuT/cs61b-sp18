@@ -28,8 +28,8 @@ public class TestSimpleOomage {
           meaning no two SimpleOomages should EVER have the same
           hashCode UNLESS they have the same red, blue, and green values!
          */
-        SimpleOomage ooA = new SimpleOomage(5, 10, 5);
-        SimpleOomage ooB = new SimpleOomage(5, 5, 10);
+        SimpleOomage ooA = new SimpleOomage(0, 5, 0);
+        SimpleOomage ooB = new SimpleOomage(0, 0, 10);
         assertFalse(ooA.hashCode() == ooB.hashCode());
     }
 
