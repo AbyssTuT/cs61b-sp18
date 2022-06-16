@@ -109,7 +109,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
 
         /** Your code here. */
-        if (index == 1) {
+        if (getNode(index) == null) {
             return;
         }
         Node node1 = getNode(index);
@@ -133,6 +133,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
         /** Your code here. */
+        if(getNode(index) == null){
+            return;
+        }
         Node nodeLeft = getNode(leftIndex(index));
         Node nodeRight = getNode(rightIndex(index));
         while (!(nodeLeft == null && nodeRight == null)) {
